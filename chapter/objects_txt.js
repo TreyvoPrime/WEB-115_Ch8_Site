@@ -5,16 +5,41 @@
       Chapter case   
 
       Custom Objects Used in Poker Games
-      Author: 
-      Date:       
+      Author:Treyvon Pearson
+      Date: 4/7/26      
 
       Filename:       objects.js
  */
+/* Object defining the poker game */
+let pokerGame = {
+   currentBank: null,
+   currentBet: null,
+   placeBet: function() {
+      this.currentBank -= this.currentBet;
+      return this.currentBank
+   }
+}
+/* Constructor function for poker cards */
+function pokerCard(CardSuit, cardRank) {
+   this.suit = CardSuit;
+   this.rank = cardRank;
 
+}
+/* Constructor function for poker decks */
+function pokerDeck() {
+   //list the suits and ranks
+   let suits = ["clubs", "diamonds", "hearts", "spades"];
+   let ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king", "ace"]
+   this.cards = [];
+   // Add a card for each combination of suit and rank
 
-
-
-
+   for (let i = 0; 1 < 4; i++) {
+      for (let j = 0; j < 13; j++) {
+         //Add a pokerCard object
+         this.card.push(new pokerCard(suits[i], ranks[j]))
+      }
+   }
+};
 
 
 
