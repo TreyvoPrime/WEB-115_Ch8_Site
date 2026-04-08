@@ -7,7 +7,7 @@
       Author: Treyvon Pearson
       Date:    4/7/2026   
 
-      Filename:       js08.js
+      Filename:       js08_txt.js
  */
 
 window.addEventListener("load", playDrawPoker);
