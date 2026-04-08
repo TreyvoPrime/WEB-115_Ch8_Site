@@ -5,7 +5,7 @@
 
       Draw Poker Game using Object Oriented Programming
       Author: Treyvon Pearson
-      Date:   4/7/26
+      Date:    4/7/2026   
 
       Filename:       js08.js
  */
@@ -22,34 +22,48 @@ function playDrawPoker() {
    let betSelection = document.getElementById("bet");
    let bankBox = document.getElementById("bank");
    let cardImages = document.querySelectorAll("img.cardImg");
-   // set the initial bank and bet values
-   pokerGame.currentBank = 500;
+   pokerGame.currentBank = 500
    pokerGame.currentBet = 25
-   // Create a deck of shuffled cards 
    let myDeck = new pokerDeck()
-   myDeck.shuffle();
-   // Display the current bank value
+   myDeck.shuffle()
+   let myHand = new pokerHand(5)
    bankBox.value = pokerGame.currentBank
-   // Change the bet when the selection changes
-   betSelection.onchange = function() {
+   betSelection.onchange = function(){
       pokerGame.currentBet = parseInt(this.value)
    }
     
    
       dealButton.addEventListener("click", function() {
-      if (pokerGame.currentBank >= pokerGame.currentBet) {
-         // Enable the Draw and Stand buttons after the initial deal
+         if (pokerGame.currentBank >= pokerGame.currentBet) {
+            // Enable the Draw and Stand buttons after the initial deal
             dealButton.disabled = true;        // Turn off the Deal button
             betSelection.disabled = true;      // Turn off the Bet Selection list
             drawButton.disabled = false;       // Turn on the Draw button
             standButton.disabled = false;      // Turn on the Stand Button
-            statusBox.textContent = "";   
-                 // Erase any status messages
-            bankBox.value = pokerGame.placeBet();
-      } else {
-         statusBox.textContent = "Insufficient Funds"
-      }
-});
+            statusBox.textContent = "";        // Erase any status messages
+            bankBox.value = pokerGame.placeBet()
+            if (myDeck.cards.length < 10){
+               myDeck = new pokerDeck()
+               myDeck.shuffle()
+            }
+            myDeck.dealTo(myHand)
+            for (let i = 0; i < cardImages.length; i++){
+               cardImages[i].src = myHand.cards[i].cardImages()
+               cardImages[i].onclick = function(){
+                  if (this.src.includes("cardback.png"))
+                     this.src = myHand.cards[i].cardImages()
+                  else {
+                     this.src = "cardback.png"
+                  }
+               }
+            }
+            console.log(myDeck,myHand)
+         } else{
+            statusBox.textContent = "Insufficient Funds"
+         }
+            
+
+   });
    
    
    drawButton.addEventListener("click", function() {
@@ -58,9 +72,14 @@ function playDrawPoker() {
       betSelection.disabled = false;      // Turn on the Bet Selection list
       drawButton.disabled = true;         // Turn off the Draw button
       standButton.disabled = true;        // Turn off the Stand Button
-      
-
-
+      for (let i = 0; i < cardImages.length; i++){
+         if (cardImages[i].src.includes("cardback.png")){
+            myHand.replaceCard(i, myDeck)
+            cardImages[i].src = myHand.cards[i].cardImages()
+         }
+      }
+      statusBox.textContent = myHand.getHandValue()
+      bankBox.value = pokerGame.payBet(statusBox.textContent)
    });
    
     
@@ -70,6 +89,8 @@ function playDrawPoker() {
       betSelection.disabled = false;      // Turn on the Bet Selection list
       drawButton.disabled = true;         // Turn off the Draw button
       standButton.disabled = true;        // Turn off the Stand Button  
+      ststusBox.textContent = myHand.getHandValue()
+      bankBox.value  = pokerGame.payBet(statusBox.textContent)
 
     
    });
